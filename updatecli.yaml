@@ -1,0 +1,21 @@
+sources:
+  default:
+    kind: shell
+    spec:
+      command: echo "r.example.com/app:v2.0.0"
+  bosh-is:
+    kind: json
+    spec :
+      file: "https://bosh.io/api/v1/releases/github.com/concourse/concourse"
+      versionfilter:
+        kind: semver
+      query: ".[*].version"
+
+targets:
+  updateDeploymentEnvVar:
+    kind: yaml
+    name: 'bump ANOTHER_VARIABLE to {{ source "default" }}'
+    spec:
+      engine: yamlpath
+      file: ./deployments/var-example/aws-s1/deployment.yaml
+      key: "$.spec.template.spec.containers[*].env[?(@.name == 'ANOTHER_VARIABLE')].value"

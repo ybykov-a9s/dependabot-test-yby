@@ -1,0 +1,31 @@
+{
+  //"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "enabledManagers": ["regex"],
+  "kubernetes": {
+    "fileMatch": ["deployments/.*\\.ya?ml$"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["releases/.*\\.yml"],
+      "matchStrings": [
+        "\\s*version:\\s*[\"\\']?(?<currentValue>[\\w+\\.\\-]*)[\"\\']?\\s*url:\\s*[\"\\']?https:\\/\\/bosh\\.io\\/d\\/github.com\\/(?<packageName>[\\w+\\-\\/]*)\\?v=[\\d+\\.]*[\"\\']?\\s*sha1:\\s*[\"\\']?(?<currentDigest>[\\w+\\.\\-\\:\\/\\?\\=]*)[\"\\']?"
+      ],
+      "datasourceTemplate": "custom.bosh-io"
+    }
+  ],
+
+  "customDatasources": {
+    "bosh-io": {
+      "format": "json",
+      "defaultRegistryUrlTemplate": "https://bosh.io/api/v1/releases/github.com/{{packageName}}",
+      "transformTemplates": [
+        "{\"releases\":[{\"version\": $$[0].version, \"sourceUrl\": $$[0].url, \"digest\": $$[0].sha1}]}"
+      ]
+    }
+  }
+
+}

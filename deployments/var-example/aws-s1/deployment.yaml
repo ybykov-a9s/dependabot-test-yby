@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ctr
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ctr
+    spec:
+      containers:
+        - name: ctr-app
+          image: r.example.org/ctr:local
+          ports:
+            - containerPort: 8080
+              name: web
+          env:
+            - name: "ANOTHER_VARIABLE"
+              value: "r.example.com/app:v1.2.3"

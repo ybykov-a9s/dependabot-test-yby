@@ -1,0 +1,51 @@
+sources:
+  concourse-version:
+    kind: json
+    spec:
+      file: "https://bosh.io/api/v1/releases/github.com/concourse/concourse"
+      #query: "[0].version"
+      query: "[*].version"
+      versionfilter:
+        #kind: semver
+        kind: regex
+  concourse-sha1:
+    kind: json
+    spec:
+      file: "https://bosh.io/api/v1/releases/github.com/concourse/concourse"
+      query: "[0].sha1"
+      versionfilter:
+        kind: regex
+        regex: "(.*)"
+  concourse-url:
+    kind: json
+    spec:
+      file: "https://bosh.io/api/v1/releases/github.com/concourse/concourse"
+      query: "[0].url"
+      versionfilter:
+        kind: regex
+        regex: "(.*)"
+
+targets:
+  concourse-version:
+    kind: yaml
+    name: 'bump concourse version using yamlpath module'
+    sourceid: concourse-version
+    spec:
+      engine: yamlpath
+      file: ./releases/concourse.yml
+      key: "$..[?(@.name=='concourse')].version"
+  concourse-sha1:
+    kind: yaml
+    name: 'bump concourse sha1 checksum using goccy/go-yaml module'
+    sourceid: concourse-sha1
+    spec:
+      engine: go-yaml
+      file: ./releases/concourse.yml
+      key: "$..'[0].sha1'"
+  concourse-url:
+    kind: yaml
+    name: 'bump concourse URL using goccy/go-yaml module'
+    sourceid: concourse-url
+    spec:
+      file: ./releases/concourse.yml
+      key: "$..'[0].url'"
