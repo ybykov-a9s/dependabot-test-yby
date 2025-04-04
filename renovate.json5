@@ -32,5 +32,10 @@
       ],
     },
   },
-  recreateWhen: always
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["concourse/concourse", "cloudfoundry/os-conf-release"],
+      "recreateWhen": "always"
+    }
+  ]
 }
