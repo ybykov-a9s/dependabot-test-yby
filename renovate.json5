@@ -14,7 +14,8 @@
       "matchStrings": [
         "\\s*version:\\s*[\"\\']?(?<currentValue>[\\w+\\.\\-]*)[\"\\']?\\s*url:\\s*[\"\\']?https:\\/\\/bosh\\.io\\/d\\/github.com\\/(?<packageName>[\\w+\\-\\/]*)\\?v=[\\d+\\.]*[\"\\']?\\s*sha1:\\s*[\"\\']?(?<currentDigest>[\\w+\\.\\-\\:\\/\\?\\=]*)[\"\\']?"
       ],
-      "datasourceTemplate": "custom.bosh-io"
+      "datasourceTemplate": "custom.bosh-io",
+      "autoReplaceStringTemplate": "\n  version: \"{{{newValue}}}\"\n  url: \"https://bosh.io/d/github.com/{{{packageName}}}?{{{newValue}}}\"\n  sha1: \"{{{newDigest}}}\""
     }
   ],
 
