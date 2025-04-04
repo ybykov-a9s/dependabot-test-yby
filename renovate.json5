@@ -1,32 +1,35 @@
 {
-  //"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
+  extends: [
+    'config:recommended',
   ],
-  "enabledManagers": ["regex"],
-  "kubernetes": {
-    "fileMatch": ["deployments/.*\\.ya?ml$"]
+  enabledManagers: [
+    'custom.regex',
+  ],
+  kubernetes: {
+    fileMatch: [
+      'deployments/.*\\.ya?ml$',
+    ],
   },
-  "customManagers": [
+  customManagers: [
     {
-      "customType": "regex",
-      "fileMatch": ["releases/.*\\.yml"],
-      "matchStrings": [
-        "\\s*version:\\s*[\"\\']?(?<currentValue>[\\w+\\.\\-]*)[\"\\']?\\s*url:\\s*[\"\\']?https:\\/\\/bosh\\.io\\/d\\/github.com\\/(?<packageName>[\\w+\\-\\/]*)\\?v=[\\d+\\.]*[\"\\']?\\s*sha1:\\s*[\"\\']?(?<currentDigest>[\\w+\\.\\-\\:\\/\\?\\=]*)[\"\\']?"
+      customType: 'regex',
+      fileMatch: [
+        'releases/.*\\.yml',
       ],
-      "datasourceTemplate": "custom.bosh-io",
-      "autoReplaceStringTemplate": "\n  version: \"{{{newValue}}}\"\n  url: \"https://bosh.io/d/github.com/{{{packageName}}}?{{{newValue}}}\"\n  sha1: \"{{{newDigest}}}\""
-    }
+      matchStrings: [
+        '\\s*version:\\s*["\\\']?(?<currentValue>[\\w+\\.\\-]*)["\\\']?\\s*url:\\s*["\\\']?https:\\/\\/bosh\\.io\\/d\\/github.com\\/(?<packageName>[\\w+\\-\\/]*)\\?v=[\\d+\\.]*["\\\']?\\s*sha1:\\s*["\\\']?(?<currentDigest>[\\w+\\.\\-\\:\\/\\?\\=]*)["\\\']?',
+      ],
+      datasourceTemplate: 'custom.bosh-io',
+      autoReplaceStringTemplate: '\n  version: "{{{newValue}}}"\n  url: "https://bosh.io/d/github.com/{{{packageName}}}?{{{newValue}}}"\n  sha1: "{{{newDigest}}}"',
+    },
   ],
-
-  "customDatasources": {
-    "bosh-io": {
-      "format": "json",
-      "defaultRegistryUrlTemplate": "https://bosh.io/api/v1/releases/github.com/{{packageName}}",
-      "transformTemplates": [
-        "{\"releases\":[{\"version\": $$[0].version, \"sourceUrl\": $$[0].url, \"digest\": $$[0].sha1}]}"
-      ]
-    }
-  }
-
+  customDatasources: {
+    'bosh-io': {
+      format: 'json',
+      defaultRegistryUrlTemplate: 'https://bosh.io/api/v1/releases/github.com/{{packageName}}',
+      transformTemplates: [
+        '{"releases":[{"version": $$[0].version, "sourceUrl": $$[0].url, "digest": $$[0].sha1}]}',
+      ],
+    },
+  },
 }
