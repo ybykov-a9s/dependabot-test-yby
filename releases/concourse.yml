@@ -1,7 +1,7 @@
 - name: "concourse"
-  version: "1.2.3"
-  url: "https://bosh.io/d/github.com/concourse/concourse?v=1.2.3"
-  sha1: "693c389e070d8e843c13c3dd41f73e66927b1874"
+  version: "4.2.1"
+  url: "https://bosh.io/d/github.com/concourse/concourse?v=4.2.1"
+  sha1: "470a6fdd7cb82fc723d7d78930c7d261ca4a6cb4"
 
 - name: "os-conf"
   version: "20.0.0"
